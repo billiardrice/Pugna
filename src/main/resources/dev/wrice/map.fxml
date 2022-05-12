@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #cccccc;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.wrice.MapMaker">
+   <children>
+      <Pane fx:id="mapPane" layoutX="-200.0" layoutY="-380.0" prefHeight="1500.0" prefWidth="1500.0" style="-fx-background-color: #ffffff;" />
+      <HBox prefHeight="100.0" prefWidth="1080.0" style="-fx-background-color: #aaaaaa;">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                     <children>
+                        <RadioButton fx:id="panTool" mnemonicParsing="false" onAction="#changeTool" text="Pan">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="modes" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="drawTool" mnemonicParsing="false" onAction="#changeTool" selected="true" text="Draw" toggleGroup="$modes" />
+                        <RadioButton fx:id="sliceTool" mnemonicParsing="false" onAction="#changeTool" text="Slice" toggleGroup="$modes" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                     <children>
+                        <RadioButton fx:id="polyTool" mnemonicParsing="false" onAction="#changeTool" text="Polygon" toggleGroup="$modes" />
+                        <RadioButton fx:id="connectTool" mnemonicParsing="false" onAction="#changeTool" text="Connect" toggleGroup="$modes" />
+                        <RadioButton mnemonicParsing="false" toggleGroup="$modes" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Button fx:id="exportButton" mnemonicParsing="false" onAction="#export" prefHeight="100.0" prefWidth="100.0" text="Export" textAlignment="CENTER" />
+         </children>
+      </HBox>
+   </children>
+</Pane>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.wrice.MainMenu">
+   <children>
+      <Label layoutX="463.0" layoutY="158.0" text="Pugna" textAlignment="CENTER">
+         <font>
+            <Font name="Fira Code Regular" size="50.0" />
+         </font>
+      </Label>
+      <Button layoutX="290.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeToMap" prefHeight="50.0" prefWidth="500.0" style="-fx-background-image: url('../menu-button.png');">
+         <font>
+            <Font name="Fira Code Regular" size="24.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@menu-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</Pane>
