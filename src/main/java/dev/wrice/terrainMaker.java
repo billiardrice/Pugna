@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import Pugna.Map.GameMap;
-import dev.wrice.terrainMaker.Mode;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -40,6 +41,7 @@ public class terrainMaker {
 	private static boolean polyMaking = false;
 	private static Point2D pan = new Point2D(0, 0);
 	private static Boolean panning = false;
+	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	private static ArrayList<Polygon> polys = new ArrayList<>();
 
@@ -72,6 +74,7 @@ public class terrainMaker {
 		return scene;
 	}
 
+	@SuppressWarnings ("all")
 	public static GameMap createMap() {
 		try {
 
@@ -89,7 +92,7 @@ public class terrainMaker {
 			return g;
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Error Creating Map");
 			return null;
 		}
 	}
@@ -258,12 +261,10 @@ public class terrainMaker {
 							TextField territoryName = new TextField();
 							territoryName.addEventHandler(KeyEvent.KEY_PRESSED, enter -> {
 								if (enter.getCode() == KeyCode.ENTER) {
-									System.out.println(territoryName.getText());
 								}
 							});
 							Button submit = new Button("Submit");
 							submit.setOnMouseClicked(clickEvent -> {
-								System.out.println(territoryName.getText());
 								dialog.close();
 							});
 							dialogVbox.getChildren().add(territoryName);

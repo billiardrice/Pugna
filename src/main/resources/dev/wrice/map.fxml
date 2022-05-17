@@ -44,6 +44,8 @@
             </HBox>
             <Separator orientation="VERTICAL" prefHeight="200.0" />
             <Button fx:id="exportButton" mnemonicParsing="false" onAction="#export" prefHeight="100.0" prefWidth="100.0" text="Export" textAlignment="CENTER" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Button mnemonicParsing="false" onAction="#exit" prefHeight="100.0" prefWidth="100.0" text="Exit" textAlignment="CENTER" />
          </children>
       </HBox>
    </children>

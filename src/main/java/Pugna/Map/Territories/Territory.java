@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Pugna.Team;
 import Pugna.Map.Region;
+import Pugna.Troops.BasicTroop;
 import Pugna.Troops.Troop;
 
 public class Territory {
@@ -16,13 +17,16 @@ public class Territory {
 	private List<Troop> immobileTroops;
 	private Boolean claimable;
 	private Team team;
-	private Map<String, String> points;
+	private Map<Integer, String> points;
+	private Integer reinforcements = 1;
+	private Boolean capital;
 
-	public Territory(String name, Region region, Boolean claimable, Map<String, String> points) {
+	public Territory(String name, Region region, Boolean claimable, Map<Integer, String> points, Integer reinforcements) {
 		this.name = name;
 		this.region = region;
 		this.claimable = claimable;
 		this.points = points;
+		this.reinforcements = reinforcements;
 	}
 
 	/**
@@ -63,7 +67,18 @@ public class Territory {
 	 * @return List of new troops
 	 */
 	public List<Troop> reinforce() {
-		return null;
+		for (Troop t : immobileTroops) {
+			mobileTroops.add(t);
+		}
+		immobileTroops.clear();
+		
+		mobileTroops.add(new BasicTroop());
+		for (int i = 0; i < reinforcements; i++) {
+			mobileTroops.add(new BasicTroop());
+		}
+
+		return mobileTroops;
+
 	}
 
 	/**
@@ -153,15 +168,23 @@ public class Territory {
 	/**
 	 * @return Map<String, String> return the points
 	 */
-	public Map<String, String> getPoints() {
+	public Map<Integer, String> getPoints() {
 		return points;
 	}
 
 	/**
 	 * @param points the points to set
 	 */
-	public void setPoints(Map<String, String> points) {
+	public void setPoints(Map<Integer, String> points) {
 		this.points = points;
+	}
+
+	public Integer getReinforcements() {
+		return this.reinforcements;
+	}
+
+	public void setReinforcements(int reinforcements) {
+		this.reinforcements = reinforcements;
 	}
 
 }

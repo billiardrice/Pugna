@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.wrice.GameScreen">
+   <children>
+      <Pane fx:id="mapPane" layoutX="-190.0" layoutY="-370.0" prefHeight="1500.0" prefWidth="1500.0" style="-fx-background-color: #ffffff;" />
+      <HBox alignment="CENTER" layoutX="390.0" layoutY="25.0" spacing="20.0" style="-fx-background-color: #AAAAAA; -fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #888888;">
+         <children>
+            <Button mnemonicParsing="false" onAction="#exit" prefHeight="100.0" prefWidth="100.0" text="Exit" textAlignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#exit" prefHeight="100.0" prefWidth="100.0" text="Example" textAlignment="CENTER" />
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+         </padding>
+      </HBox>
+   </children>
+</Pane>

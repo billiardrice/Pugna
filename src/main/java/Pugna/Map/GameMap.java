@@ -25,19 +25,23 @@ public class GameMap {
 	@SuppressWarnings("unchecked")
 	public GameMap(JSONObject json) {
 
+		// Gets Regions from JSON
 		for (String i : ((HashMap<String, Integer>) json.get("Regions")).keySet()) {
 			regions.put(i, new Region(i));
 		}
 
+		// Gets Territories from JSON
 		for (Entry<String, Object> i : ((HashMap<String, Object>) json.get("Territories")).entrySet()) {
 
 			Region region = regions.get(((HashMap<String, String>) i.getValue()).get("Region"));
 			Boolean claimable = ((HashMap<String, Boolean>) i.getValue()).get("Claimable");
-			Map<String, String> points = ((HashMap<String, JSONObject>) i.getValue()).get("Points");
+			Map<Integer, String> points = ((HashMap<Integer, JSONObject>) i.getValue()).get((Object) "Points");
+			int reinforcements = ((HashMap<String, Integer>) i.getValue()).get("Reinforcements");
 
-			territories.put(i.getKey(), new Territory(i.getKey(), region, claimable, points));
+			territories.put(i.getKey(), new Territory(i.getKey(), region, claimable, points, reinforcements));
 		}
 
+		// Gets Connections from JSON
 		for (Entry<String, Object> i : ((HashMap<String, Object>) json.get("Territories")).entrySet()) {
 			ArrayList<Connection> connections = new ArrayList<>();
 			for (Entry<String, Object> j : ((HashMap<String, Object>) ((HashMap<String, Object>) i.getValue())
@@ -72,10 +76,8 @@ public class GameMap {
 			try {
 				for (Connection con : graph.get(t)) {
 					c.put(con.toString(), con.getWeight());
-					System.out.println(c);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			parms.put("Connections", c);
 

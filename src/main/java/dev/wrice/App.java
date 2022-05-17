@@ -14,12 +14,21 @@ import javafx.stage.Stage;
 public class App extends Application {
 
 	private static Scene scene;
+	private static Stage stage;
 
 	@Override
 	public void start(Stage stage) throws IOException {
 		scene = new Scene(loadFXML("mainMenu"), 1080, 720);
 		stage.setScene(scene);
+		stage.setTitle("Pugna");
+		App.stage = stage;
 		stage.show();
+	}
+
+	public static void resize() {
+		stage.setResizable(false);
+		stage.setWidth(1080);
+		stage.setHeight(720);
 	}
 
 	static void setRoot(String fxml) throws IOException {

@@ -2,6 +2,10 @@ package dev.wrice;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+// import java.util.logging.*;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +17,6 @@ import java.util.Stack;
 
 import Pugna.Map.GameMap;
 import Pugna.Map.Region;
-import Pugna.Map.Territories.Connection;
 import Pugna.Map.Territories.Territory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,17 +43,18 @@ import javafx.scene.shape.StrokeLineJoin;
 public class MapMaker implements Initializable {
 
 	private ArrayList<Line> polyLines = new ArrayList<>();
+	private ArrayList<Arrow> connLines = new ArrayList<>();
 	private ArrayList<Point2D> polyPoints = new ArrayList<>();
-	private Polygon curPoly;
 	private Stack<Shape> undoBuffer = new Stack<>();
 	private boolean polyMaking = false;
 	private Point2D pan = new Point2D(0, 0);
 	private Boolean panning = false;
-	private Line connectLine = null;
-	private polyTerrain start = null;
-	private Map<polyTerrain, LinkedList<polyTerrain>> cons = new HashMap<>();
+	private Arrow connectLine = null;
+	private PolyTerrain start = null;
+	private Map<PolyTerrain, LinkedList<PolyTerrain>> cons = new HashMap<>();
 
-	private ArrayList<polyTerrain> polys = new ArrayList<>();
+	private ArrayList<PolyTerrain> polys = new ArrayList<>();
+	private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	enum Mode {
 		DRAW,
@@ -78,9 +82,10 @@ public class MapMaker implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		LOGGER.log(Level.INFO, "Creating Grid");
 		createGrid(0.75, 20);
+		LOGGER.log(Level.INFO, "Creating Handlers");
 		createHandlers();
-		// System.out.print(mapPane.getWidth());
 	}
 
 	public void createHandlers() {
@@ -103,11 +108,11 @@ public class MapMaker implements Initializable {
 			}
 			if (keyBoard.getCode() == KeyCode.Z) {
 				try {
-					System.out.println(undoBuffer.peek());
+					LOGGER.log(Level.INFO, "Undid Delete");
 					Shape s = undoBuffer.pop();
 
-					if (s.getClass() == new polyTerrain().getClass()) {
-						polys.add((polyTerrain) s);
+					if (s.getClass() == new PolyTerrain().getClass()) {
+						polys.add((PolyTerrain) s);
 						mapPane.getChildren().add(s);
 						s.toBack();
 					}
@@ -148,14 +153,17 @@ public class MapMaker implements Initializable {
 
 		});
 		mapPane.addEventHandler(MouseEvent.MOUSE_PRESSED, click -> {
-			curPoly = null;
+			List<Node> temp = new LinkedList<>();
 			for (Node n : ((Pane) scene).getChildren()) {
 				try {
 					if (n.getId().equals("polyMenu")) {
-						((Pane) scene).getChildren().remove(n);
+						temp.add(n);
 					}
 				} catch (Exception e) {
 				}
+			}
+			for (Node n : temp) {
+				((Pane) scene).getChildren().remove(n);
 			}
 		});
 		mapPane.addEventHandler(MouseEvent.MOUSE_MOVED, moved -> {
@@ -189,9 +197,7 @@ public class MapMaker implements Initializable {
 								newLine(new Point2D(point.getCenterX(), point.getCenterY()));
 							}
 							break;
-						case PAN:
-							break;
-						case POLYGONS:
+						default:
 							break;
 					}
 
@@ -227,7 +233,8 @@ public class MapMaker implements Initializable {
 				Line last = polyLines.get(polyLines.size() - 1);
 				last.setEndX(pos.getX());
 				last.setEndY(pos.getY());
-				polyTerrain poly = new polyTerrain();
+				LOGGER.log(Level.INFO, "Creating Polygon");
+				PolyTerrain poly = new PolyTerrain();
 				poly.setFill(new Color(0, 0, 0, 0.1));
 				poly.setStroke(Color.BLACK);
 				poly.setStrokeWidth(5);
@@ -235,8 +242,8 @@ public class MapMaker implements Initializable {
 				poly.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 					switch (curMode) {
 						case POLYGONS:
-							curPoly = poly;
 							try {
+								LOGGER.log(Level.INFO, "Opening Polygon Config");
 								Pane polyMenu = (Pane) App.loadFXML("polyMenu");
 								((Pane) mapPane.getParent()).getChildren().add(polyMenu);
 								polyMenu.setVisible(true);
@@ -253,12 +260,20 @@ public class MapMaker implements Initializable {
 											n.addEventHandler(KeyEvent.KEY_RELEASED, keyEvent -> {
 												poly.setRegion(((TextField) n).getText());
 											});
+										} else if (n.getId().equals("reinforcements")) {
+											try {
+												((TextField) n).setText(Integer.toString(poly.getReinforcements()));
+											} catch (Exception e) {
+											}
+											n.addEventHandler(KeyEvent.KEY_RELEASED, keyEvent -> {
+												poly.setReinforcements(Integer.parseInt(((TextField) n).getText()));
+											});
 										}
 									} catch (Exception e) {
 									}
 								}
 							} catch (IOException e) {
-								e.printStackTrace();
+								LOGGER.log(Level.WARNING, "Error Creating Polygon Config");
 							}
 							break;
 						case DRAW:
@@ -270,6 +285,7 @@ public class MapMaker implements Initializable {
 							mapPane.getChildren().remove(poly);
 							break;
 						case CONNECT:
+							LOGGER.log(Level.INFO, "Connecting Polygon");
 
 							Map<Integer, LinkedList<Double>> p = new HashMap<>();
 							p.put(0, new LinkedList<>());
@@ -293,17 +309,23 @@ public class MapMaker implements Initializable {
 							yes /= p.get(1).size();
 
 							if (connectLine == null) {
-								connectLine = new Line(xes, yes, event.getX(), event.getY());
+								connectLine = new Arrow();
+								connectLine.setStartX(xes);
+								connectLine.setStartY(yes);
+								connectLine.setEndX(pos.getX());
+								connectLine.setEndX(pos.getY());
 								start = poly;
 								mapPane.getChildren().add(connectLine);
 								connectLine.toBack();
-							} else {
+							} else if (start != poly) {
 								if (!cons.keySet().contains(start)) {
-									cons.put(start, new LinkedList());
+									cons.put(start, new LinkedList<>());
 								}
+								connLines.add(connectLine);
 								cons.get(start).add(poly);
+								connectLine.setEndX(xes);
+								connectLine.setEndY(yes);
 								start = null;
-								mapPane.getChildren().remove(connectLine);
 								connectLine = null;
 							}
 
@@ -372,12 +394,12 @@ public class MapMaker implements Initializable {
 		Map<String, Region> r = new HashMap<>();
 		Map<String, Territory> t = new HashMap<>();
 
-		for (polyTerrain p : polys) {
+		for (PolyTerrain p : polys) {
 			r.put(p.getRegion(), new Region(p.getRegion()));
 		}
 
-		for (polyTerrain p : polys) {
-			t.put(p.getTId(), new Territory(p.getTId(), r.get(p.getRegion()), true, p.getPointMap()));
+		for (PolyTerrain p : polys) {
+			t.put(p.getTId(), new Territory(p.getTId(), r.get(p.getRegion()), true, p.getPointMap(), p.getReinforcements()));
 		}
 
 		for (Region reg : r.values()) {
@@ -385,12 +407,11 @@ public class MapMaker implements Initializable {
 		}
 
 		for (Territory ter : t.values()) {
-			g.addTerritory(new Territory(ter.toString(), r.get(ter.getRegion().toString()), true, ter.getPoints()));
+			g.addTerritory(ter);
 		}
 
-		for (polyTerrain p : cons.keySet()) {
-			for (polyTerrain d : cons.get(p)) {
-				System.out.println(p.getTId() + " : " + d.getTId());
+		for (PolyTerrain p : cons.keySet()) {
+			for (PolyTerrain d : cons.get(p)) {
 				g.addConnection(t.get(p.getTId()), t.get(d.getTId()));
 			}
 		}
@@ -400,9 +421,13 @@ public class MapMaker implements Initializable {
 			myWriter.write(g.toJSON());
 			myWriter.close();
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Could not export to file");
 		}
+	}
+
+	@FXML
+	public void exit() throws IOException {
+		App.setRoot("mainMenu");
 	}
 
 }

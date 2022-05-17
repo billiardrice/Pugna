@@ -5,6 +5,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.wrice.MainMenu">
@@ -14,17 +19,83 @@
             <Font name="Fira Code Regular" size="50.0" />
          </font>
       </Label>
-      <Button layoutX="290.0" layoutY="360.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeToMap" prefHeight="50.0" prefWidth="500.0" style="-fx-background-image: url('../menu-button.png');">
-         <font>
-            <Font name="Fira Code Regular" size="24.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="50.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@menu-button.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
+      <VBox layoutX="289.0" layoutY="360.0" spacing="75.0">
+         <children>
+            <StackPane>
+               <children>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeToGame" prefHeight="50.0" prefWidth="500.0" style="-fx-background-image: url('../menu-button.png');">
+                     <font>
+                        <Font name="Fira Code Regular" size="24.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@menu-button.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label mouseTransparent="true" text="Game" textAlignment="CENTER">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="0.9009434222957337" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.9873344302177429" green="0.0091014439240098" blue="0.0091014439240098" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.047422874718904495" green="0.7725721597671509" blue="0.9353607892990112" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+               </children>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changeToMap" prefHeight="50.0" prefWidth="500.0" style="-fx-background-image: url('../menu-button.png');">
+                     <font>
+                        <Font name="Fira Code Regular" size="24.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@menu-button.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label mouseTransparent="true" text="Map Maker" textAlignment="CENTER">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="0.7688679613270752" endY="1.0" startX="0.8349056318145858">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.9873344302177429" green="0.0091014439240098" blue="0.0091014439240098" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.047422874718904495" green="0.7725721597671509" blue="0.9353607892990112" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Label>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
    </children>
 </Pane>

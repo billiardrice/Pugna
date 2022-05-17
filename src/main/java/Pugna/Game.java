@@ -31,7 +31,7 @@ public class Game {
 			GameMap g = new GameMap(jsonObject);
 
 			for (Entry<Territory, List<Connection>> t : g.getConnections().entrySet()) {
-				System.out.println(t.getKey() + "   :   " + t.getValue());
+				System.out.println(t.getKey() + "   :   " + t.getValue() + " : " + t.getKey().getPoints());
 			}
 
 			try {
