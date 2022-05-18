@@ -1,5 +1,6 @@
 package dev.wrice;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -39,6 +40,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class MapMaker implements Initializable {
 
@@ -389,13 +392,21 @@ public class MapMaker implements Initializable {
 	@FXML
 	private void export() {
 
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("All Files", "*.*"));
+		File selectedFile = fileChooser.showOpenDialog(App.stage);
+
 		GameMap g = new GameMap();
 
 		Map<String, Region> r = new HashMap<>();
 		Map<String, Territory> t = new HashMap<>();
 
+		int color = 0;
+		Color[] colors = new Color[]{Color.GREEN, Color.RED, Color.BLUE, Color.ORANGE, Color.CORAL};
 		for (PolyTerrain p : polys) {
-			r.put(p.getRegion(), new Region(p.getRegion()));
+			r.put(p.getRegion(), new Region(p.getRegion(), colors[color++]));
 		}
 
 		for (PolyTerrain p : polys) {
@@ -417,7 +428,8 @@ public class MapMaker implements Initializable {
 		}
 
 		try {
-			FileWriter myWriter = new FileWriter("imperator.json");
+			System.out.println(selectedFile.getCanonicalPath());
+			FileWriter myWriter = new FileWriter(selectedFile.getCanonicalPath());
 			myWriter.write(g.toJSON());
 			myWriter.close();
 		} catch (IOException e) {
@@ -428,6 +440,13 @@ public class MapMaker implements Initializable {
 	@FXML
 	public void exit() throws IOException {
 		App.setRoot("mainMenu");
+	}
+
+	@FXML
+	public void importFile() {
+
+		return;
+
 	}
 
 }

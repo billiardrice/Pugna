@@ -18,7 +18,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineJoin;
 
 public class GameScreen implements Initializable {
@@ -54,12 +53,11 @@ public class GameScreen implements Initializable {
 					p.getPoints().add(Double.parseDouble(t.getPoints().get((Object) Integer.valueOf(i).toString())));
 				}
 				p.setTId(t.getName());
-				p.setFill(new Color(0, Math.random() / 8.0 + 0.25, 0, Math.random() / 10.0 + 0.5));
+				p.setFill(t.getRegion().getColor());
 				p.setStroke(Color.BLACK);
 				p.setStrokeLineJoin(StrokeLineJoin.BEVEL);
 				p.setStrokeWidth(3);
 				p.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					p.setFill(new Color(0, Math.random() / 10.0 + 0.25, 0, Math.random() / 10.0 + 0.5));
 					LOGGER.log(Level.INFO, "Polygon " + p.getTId() + " Clicked");
 				});
 

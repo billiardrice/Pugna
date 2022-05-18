@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
 	private static Scene scene;
-	private static Stage stage;
+	public static Stage stage;
 
 	@Override
 	public void start(Stage stage) throws IOException {
