@@ -193,7 +193,7 @@ public class MapMaker implements Initializable {
 									polyLines.get(polyLines.size() - 1).setEndX(collider.getCenterX());
 									polyLines.get(polyLines.size() - 1).setEndY(collider.getCenterY());
 								} catch (Exception e) {
-								}
+							}
 							} else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
 								point.setFill(Color.BLACK);
 							} else if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
@@ -406,7 +406,7 @@ public class MapMaker implements Initializable {
 		int color = 0;
 		Color[] colors = new Color[]{Color.GREEN, Color.RED, Color.BLUE, Color.ORANGE, Color.CORAL};
 		for (PolyTerrain p : polys) {
-			r.put(p.getRegion(), new Region(p.getRegion(), colors[color++]));
+			r.put(p.getRegion(), new Region(p.getRegion(), colors[color++%5]));
 		}
 
 		for (PolyTerrain p : polys) {

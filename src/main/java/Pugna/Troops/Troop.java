@@ -11,6 +11,8 @@ public interface Troop {
 	 */
 	public int getTraveled();
 
+	public void attack();
+
 	/**
 	 * Returns the current territory of the troop.
 	 * @return Territory - the current territory the troop is in.

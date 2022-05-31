@@ -1,9 +1,12 @@
 package Pugna.Map.Territories;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import Pugna.Attack;
 import Pugna.Team;
 import Pugna.Map.Region;
 import Pugna.Troops.BasicTroop;
@@ -27,6 +30,8 @@ public class Territory {
 		this.claimable = claimable;
 		this.points = points;
 		this.reinforcements = reinforcements;
+		mobileTroops = new LinkedList<>();
+		immobileTroops = new LinkedList<>();
 	}
 
 	/**
@@ -41,6 +46,10 @@ public class Territory {
 		temp.addAll(immobileTroops);
 
 		return temp;
+	}
+
+	public void addTroop(Troop t) {
+			mobileTroops.add(t);
 	}
 
 	/**
@@ -71,10 +80,10 @@ public class Territory {
 			mobileTroops.add(t);
 		}
 		immobileTroops.clear();
-		
-		mobileTroops.add(new BasicTroop());
-		for (int i = 0; i < reinforcements; i++) {
-			mobileTroops.add(new BasicTroop());
+
+		mobileTroops.add(new BasicTroop(mobileTroops.get(0).getTeam(), this));
+		for (int i = 1; i < reinforcements; i++) {
+			mobileTroops.add(new BasicTroop(mobileTroops.get(0).getTeam(), this));
 		}
 
 		return mobileTroops;
@@ -133,16 +142,16 @@ public class Territory {
 	/**
 	 * @return List<Troop> return the immobileTroops
 	 */
-	public List<Troop> getImmobileTroops() {
-		return immobileTroops;
-	}
+	// public List<Troop> getImmobileTroops() {
+	// 	return immobileTroops;
+	// }
 
 	/**
 	 * @param immobileTroops the immobileTroops to set
 	 */
-	public void setImmobileTroops(List<Troop> immobileTroops) {
-		this.immobileTroops = immobileTroops;
-	}
+	// public void setImmobileTroops(List<Troop> immobileTroops) {
+	// 	this.immobileTroops = immobileTroops;
+	// }
 
 	/**
 	 * @return Boolean return the claimable
@@ -187,4 +196,22 @@ public class Territory {
 		this.reinforcements = reinforcements;
 	}
 
+	public void remTroop(Troop troop) {
+		this.mobileTroops.remove(troop);
+		this.immobileTroops.remove(troop);
+	}
+
+	public void move(int numTroops, Territory territory) {
+		Attack a = new Attack(this.getMobileTroops().subList(0, numTroops), this, territory);
+		while (!a.attackDone()) {
+			List<Integer> ar = new LinkedList<>();
+			List<Integer> dr = new LinkedList<>();
+			ar.add((int)(Math.random() * 6) + 1);
+			ar.add((int)(Math.random() * 6) + 1);
+			ar.add((int)(Math.random() * 6) + 1);
+			dr.add((int)(Math.random() * 6) + 1);
+			dr.add((int)(Math.random() * 6) + 1);
+			a.attack(ar, dr);
+		}
+	}
 }
